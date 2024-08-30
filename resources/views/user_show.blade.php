@@ -3,7 +3,7 @@
 @section('content')
     <h2>User - {{ $user->firstName}}</h2>
 
-    <form action="{{ route('user.destroy', ['user' => $user->id])}}" method="post">
+    <form action="{{ route('users.destroy', ['user' => $user->id])}}" method="post">
         @csrf
         @method('DELETE')
         <button type="submit">Delete</button>
