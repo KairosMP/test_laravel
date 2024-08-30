@@ -27,7 +27,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('user_create');
     }
 
     /**
@@ -35,23 +35,35 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $created = $this->user->create([
+            'firstName' => $request->input('firstName'),
+            'lastName' => $request->input('lastName'),
+            'email' => $request->input('email'),
+            'password' => password_hash($request->input('password'), PASSWORD_DEFAULT),
+        ]);
+
+        if ($created) {
+            return redirect()->back()->with('message', 'successfully created');
+        }
+
+        return redirect()->back()->with('message', 'error created');
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        //
+        return view('user_show', ['user' => $user]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
+        return view('user_edit', ['user' => $user]);
     }
 
     /**
@@ -59,7 +71,13 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $updated = $this->user->where('id', $id)->update($request->except('_token', '_method'));
+
+        if ($updated) {
+            return redirect()->back()->with('message', 'successfully updated');
+        }
+
+        return redirect()->back()->with('message', 'error updated');
     }
 
     /**
@@ -67,6 +85,6 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        var_dump('delete');
     }
 }
